@@ -2,7 +2,8 @@
 
 Usage:
 
-
+  require 'constructable'
+  include Constructable
   class Foo
     constructable :attribute, [:required_attribute, :required]
   end

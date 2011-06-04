@@ -34,7 +34,7 @@ describe 'integration' do
 
       it 'should not break the initalize behaviour' do
         klass = Class.new
-        klass.constructable([:bar, :required])
+        klass.constructable :bar
         klass.class_eval do
           def initialize
             self.bar = 20
