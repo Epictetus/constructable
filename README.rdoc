@@ -1,6 +1,17 @@
 = constructable
 
-Description goes here.
+Usage:
+
+<pre><code>
+#  class Foo
+#   constructable :attribute, [:required_attribute, :required]
+# end
+
+# foo = Foo.new(required_attribute: 6)
+# foo.required_attribute # => 6
+# Foo.new(attribute: 3)
+# # => ArgumentError, ":required_attribute needs to be a key in the constructor hash"
+</pre></code>
 
 == Contributing to constructable
  
