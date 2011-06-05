@@ -32,16 +32,31 @@ describe 'integration' do
         end
       end
 
-      it 'should not break the initalize behaviour' do
-        klass = Class.new
-        klass.constructable [:bar, accessible: true]
-        klass.class_eval do
-          def initialize
-            self.bar = 20
+      describe 'should not break the initalize behaviour' do
+        it 'works for methods with arguments + options provided' do
+          klass = Class.new
+          klass.constructable [:bar, accessible: true]
+          klass.class_eval do
+            def initialize
+              self.bar = 20
+            end
           end
+          instance = klass.new(bar: 5)
+          assert_equal 20, instance.bar
         end
-        instance = klass.new(bar: 5)
-        assert_equal 20, instance.bar
+
+        it 'works for methods with only arguments provided' do
+          klass = Class.new
+          klass.constructable [:bar, accessible: true]
+          klass.class_eval do
+            def initialize(bar)
+              self.bar = bar
+            end
+          end
+
+          instance = klass.new(1)
+          assert_equal 1, instance.bar
+        end
       end
 
       it 'should return nil' do

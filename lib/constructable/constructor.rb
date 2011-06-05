@@ -6,7 +6,8 @@ module Constructable
       constructor = self
       @klass.define_singleton_method(:new) do |*args, &block|
         obj = self.allocate
-        constructor.construct(args.pop, obj)
+        constructor_hash = Hash === args.last ? args.pop : {}
+        constructor.construct(constructor_hash, obj)
         obj.send :initialize, *args, &block
         obj
       end
