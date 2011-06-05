@@ -49,6 +49,20 @@ describe 'Option' do
       end
     end
 
+    describe 'type check' do
+      it 'should raise an OptionError if the value has not the wanted type' do
+        option = Option.new(:foo, type: Integer)
+        begin
+          option.process(foo: 'notanumber')
+        rescue Exception => e
+          assert OptionError === e, "[#{e.class},#{e.message}] was not expected"
+          assert_equal ':foo is not of type Integer', e.message
+        else
+          assert false, 'OptionError was not raised'
+        end
+      end
+    end
+
     describe 'default value' do
       it 'should be possible to provide a default value' do
         option = Option.new(:foo, default: :bar)

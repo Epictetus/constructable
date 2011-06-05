@@ -2,16 +2,35 @@
 
 Usage:
 
-  require 'constructable'
-  include Constructable
-  class Foo
-    constructable :attribute, [:required_attribute, :required]
-  end
 
-  foo = Foo.new(required_attribute: 6)
-  foo.required_attribute # => 6
-  Foo.new(attribute: 3)
-  # => ArgumentError, ":required_attribute needs to be a key in the constructor hash"
+    class Foo
+      constructable [:bar, :readable => true], [:baz, :required => true, :readable => true]
+    end
+
+    foo = Foo.new(bar: 5)
+    # raises OptionError, ':baz is a required option'
+
+    foo = Foo.new(baz: 7, bar: 5)
+
+    foo.bar
+    # => 5
+    foo.baz
+    # => 7
+
+    class ProgrammingLanguage
+      constructable [:paradigms,
+        readable: true,
+        required: true,
+        validate: ->(value) { value.is_a?(Array) }]
+    end
+
+    c = ProgrammingLanguage.new(paradigms: :functional)
+    #  raises OptionError, ':paradigms did not pass validation'
+
+    ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
+    ruby.paradigms
+    # => [:object_oriented, :functional]
+
 
 == Contributing to constructable
  
