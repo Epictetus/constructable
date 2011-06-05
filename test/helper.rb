@@ -21,4 +21,17 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'constructable'
 
 class MiniTest::Unit::TestCase
+	def refute_raises
+		test = -> do
+			begin	
+				yield
+			rescue => e
+				return false, e
+			else
+				true
+			end
+		end
+		boolean, exception = test.call
+		assert boolean, "Expected no exception, but got #{exception}"
+	end
 end

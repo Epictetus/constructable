@@ -3,10 +3,23 @@ module Constructable
     OPTIONS = [:writable, :readable, :accessible, :required, :validate, :default, :type]
     attr_accessor *OPTIONS, :name
 
+    REQUIRED_REQUIREMENT= {
+        name: :required,
+        message: proc {":#{self.name} is a required option"},
+        check: ->(hash) { hash.has_key?(self.name) }
+      }
+
     REQUIREMENTS = [
-      [:required, proc {":#{self.name} is a required option"}, ->(hash) { hash.has_key?(self.name) }],
-      [:validate, proc {":#{self.name} did not pass validation"}, ->(hash) { self.validate.call(hash[self.name])}],
-      [:type, proc {":#{self.name} is not of type #{self.type}"}, ->(hash) { self.type === hash[self.name] }]
+      {
+        name: :validate,
+        message: proc {":#{self.name} did not pass validation"},
+        check: ->(hash) { self.validate.call(hash[self.name])}
+      },
+      {
+        name: :type,
+        message: proc {":#{self.name} is not of type #{self.type}"},
+        check: ->(hash) { self.type === hash[self.name] }
+      }
     ]
 
     def initialize(name, options = {})
@@ -31,13 +44,23 @@ module Constructable
       ('@' + self.name.to_s).to_sym
     end
 
-    def process(constructor_hash)
-      REQUIREMENTS.each do |requirement|
-        if self.send requirement[0]
-          raise OptionError, instance_eval(&requirement[1]) unless self.instance_exec(constructor_hash,&requirement[2])
-        end
+    def check_for_requirement(requirement, constructor_hash)
+      if self.send requirement[:name]
+        raise OptionError, instance_eval(&requirement[:message]) unless self.instance_exec(constructor_hash,&requirement[:check])
       end
-      constructor_hash.has_key?(self.name) ? constructor_hash[self.name] : self.default
+    end
+    private :check_for_requirement
+
+    def process(constructor_hash)
+      if constructor_hash.has_key?(self.name)
+        REQUIREMENTS.each do |requirement|
+          check_for_requirement(requirement, constructor_hash)
+        end
+        constructor_hash[self.name]
+      else
+        check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
+        self.default
+      end
     end
   end
 end

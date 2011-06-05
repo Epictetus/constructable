@@ -35,6 +35,15 @@ describe 'Option' do
       end
     end
 
+    describe 'option is not required and not provided' do
+      it 'does not check for further requirements' do
+        option = Option.new(:foo, type: Integer)
+        refute_raises do
+          option.process({})
+        end
+      end
+    end
+
     describe 'validator' do
       it 'should raise an OptionError if the validator doesn\'t pass' do
         option = Option.new(:foo, validate: ->(number) { number < 5 })
