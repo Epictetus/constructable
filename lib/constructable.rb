@@ -1,8 +1,7 @@
+require 'constructable/exceptions'
 require 'constructable/constructor'
+require 'constructable/constructable'
 require 'constructable/core_ext'
+require 'constructable/option'
 module Constructable
-  def constructable(*args)
-    @__constructor ||= Constructor.new(self)
-    @__constructor.define_constructors(args)
-  end
 end

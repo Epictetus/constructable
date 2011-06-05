@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -8,12 +9,14 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+require 'simplecov'
+SimpleCov.start
+
 require 'minitest/autorun'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'constructable'
 
-include Constructable
 class MiniTest::Unit::TestCase
 end
