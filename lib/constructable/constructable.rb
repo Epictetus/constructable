@@ -34,6 +34,7 @@ module Constructable
     def constructable(*args)
       @__constructor ||= Constructor.new(self)
       @__constructor.define_options(args)
+      return nil
     end
   end
 end

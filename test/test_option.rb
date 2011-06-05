@@ -48,6 +48,13 @@ describe 'Option' do
         end
       end
     end
+
+    describe 'default value' do
+      it 'should be possible to provide a default value' do
+        option = Option.new(:foo, default: :bar)
+        assert_equal :bar, option.process({})
+      end
+    end
   end
 
   describe 'permission' do

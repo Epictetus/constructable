@@ -1,6 +1,6 @@
 module Constructable
   class Option
-    OPTIONS = [:writable, :readable, :accessible, :required, :validate]
+    OPTIONS = [:writable, :readable, :accessible, :required, :validate, :default]
     attr_accessor *OPTIONS, :name
 
     REQUIREMENTS = [
@@ -36,7 +36,7 @@ module Constructable
           raise OptionError, ":#{self.name} #{requirement[1]}" unless self.instance_exec(constructor_hash,&requirement[2])
         end
       end
-      constructor_hash[self.name]
+      constructor_hash.has_key?(self.name) ? constructor_hash[self.name] : self.default
     end
   end
 end

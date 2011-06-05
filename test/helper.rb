@@ -10,7 +10,9 @@ rescue Bundler::BundlerError => e
 end
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'test'
+end
 
 require 'minitest/autorun'
 

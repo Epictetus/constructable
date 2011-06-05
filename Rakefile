@@ -17,8 +17,13 @@ Jeweler::Tasks.new do |gem|
   gem.name = "constructable"
   gem.homepage = "http://github.com/mkorfmann/constructable"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Makes constructing objects through an options hash easier}
+  gem.description = %Q{
+Adds the class macro Class#constructable to easily define what options a method accepts.
+Options can be configured in their behaviour in case they are not provided or are in the wrong format.
+Their default value can also be defined and you have granular controll on how accessible your attribute/option is.
+See the documentation for Constructable::Constructable#constructable for more information.
+  }
   gem.email = "manu@korfmann.info"
   gem.authors = ["Manuel Korfmann"]
   # dependencies defined in Gemfile
@@ -33,13 +38,3 @@ Rake::TestTask.new(:test) do |test|
 end
 
 task :default => :test
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "constructable #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
