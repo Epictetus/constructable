@@ -37,7 +37,7 @@ describe 'Attribute' do
 
     describe 'attribute is neither required nor provided' do
       it 'does not check for further requirements' do
-        attribute = Attribute.new(:foo, type: Integer)
+        attribute = Attribute.new(:foo, validate_type: Integer)
         refute_raises do
           attribute.process({})
         end
@@ -58,14 +58,14 @@ describe 'Attribute' do
       end
     end
 
-    describe 'type check' do
-      it 'should raise an AttributeError if the value has not the wanted type' do
-        attribute = Attribute.new(:foo, type: Integer)
+    describe 'validate_type check' do
+      it 'should raise an AttributeError if the value has not the wanted validate_type' do
+        attribute = Attribute.new(:foo, validate_type: Integer)
         begin
           attribute.process(foo: 'notanumber')
         rescue Exception => e
           assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
-          assert_equal ':foo is not of type Integer', e.message
+          assert_equal ':foo is not of validate_type Integer', e.message
         else
           assert false, 'AttributeError was not raised'
         end

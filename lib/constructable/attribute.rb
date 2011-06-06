@@ -1,6 +1,6 @@
 module Constructable
   class Attribute
-    ATTRIBUTES = [:writable, :readable, :accessible, :required, :validate, :default, :type, :converter]
+    ATTRIBUTES = [:writable, :readable, :accessible, :required, :validate, :default, :validate_type, :converter]
     attr_accessor *ATTRIBUTES, :name
 
     REQUIRED_REQUIREMENT= {
@@ -16,9 +16,9 @@ module Constructable
         check: ->(hash) { self.validate.call(hash[self.name])}
       },
       {
-        name: :type,
-        message: proc {":#{self.name} is not of type #{self.type}"},
-        check: ->(hash) { self.type === hash[self.name] }
+        name: :validate_type,
+        message: proc {":#{self.name} is not of validate_type #{self.validate_type}"},
+        check: ->(hash) { self.validate_type === hash[self.name] }
       }
     ]
 
