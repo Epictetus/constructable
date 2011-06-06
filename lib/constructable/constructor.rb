@@ -1,7 +1,7 @@
 module Constructable
   class Constructor
     def initialize(klass)
-      @options = []
+      @attributes = []
       @klass = klass
       constructor = self
       @klass.define_singleton_method(:new) do |*args, &block|
@@ -13,19 +13,19 @@ module Constructable
       end
     end
 
-    def define_options(options)
-      @options.concat options.map! { |c| Option.new(*c) }
-      options.each do |options|
-        options.permissions.each do |permission|
-          @klass.send(:"attr_#{permission}", options.name)
+    def define_attributes(attributes)
+      @attributes.concat attributes.map! { |c| Attribute.new(*c) }
+      attributes.each do |attributes|
+        attributes.permissions.each do |permission|
+          @klass.send(:"attr_#{permission}", attributes.name)
         end
       end
     end
 
     def construct(constructor_hash, obj)
       constructor_hash ||= {}
-      @options.each do |options|
-        obj.instance_variable_set(options.ivar_symbol, options.process(constructor_hash))
+      @attributes.each do |attributes|
+        obj.instance_variable_set(attributes.ivar_symbol, attributes.process(constructor_hash))
       end
     end
   end

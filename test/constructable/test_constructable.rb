@@ -27,7 +27,7 @@ describe 'integration' do
       it 'should be possible to make attributes required' do
         klass = Class.new
         klass.constructable([:bar, required: true])
-        assert_raises OptionError do
+        assert_raises AttributeError do
           klass.new
         end
       end

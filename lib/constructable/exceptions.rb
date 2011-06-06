@@ -1,3 +1,3 @@
 module Constructable
-  OptionError = Class.new(ArgumentError)
+  AttributeError = Class.new(ArgumentError)
 end
