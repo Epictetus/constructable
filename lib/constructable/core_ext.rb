@@ -1,3 +1,3 @@
 module Constructable
-  ::Class.send :include, Constructable
+  ::Module.send :include, Constructable
 end
