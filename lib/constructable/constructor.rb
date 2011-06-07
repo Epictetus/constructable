@@ -1,5 +1,6 @@
 module Constructable
   class Constructor
+    PERMISSION_TO_SETTER = { writable: '=' }
     def initialize(klass)
       @attributes = []
       @klass = klass
@@ -13,11 +14,16 @@ module Constructable
       end
     end
 
+
     def define_attributes(attributes)
       @attributes.concat attributes.map! { |c| Attribute.new(*c) }
-      attributes.each do |attributes|
-        attributes.permissions.each do |permission|
-          @klass.send(:"attr_#{permission}", attributes.name)
+      attributes.each do |attribute|
+        @klass.class_eval do
+          setter = :"#{attribute.name}="
+          define_method(attribute.name) { instance_variable_get attribute.ivar_symbol }
+          private attribute.name unless attribute.readable
+          define_method(setter) { |value| instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value}) }
+          private setter unless attribute.writable
         end
       end
     end

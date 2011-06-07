@@ -3,6 +3,17 @@ describe 'Constructor' do
   before do
     @klass = Class.new
   end
+
+  describe 'define_attributes' do
+    it 'defines public setters validating like in the constructor' do
+      @klass.constructable [:integer, validate_type: Integer, writable: true]
+      instance = @klass.new
+      assert_raises AttributeError do
+        instance.integer = 6.6
+      end
+    end
+  end
+
   describe 'permission' do
     it 'should allow writable attributes' do
       @klass.constructable [:writable_attribute, writable: true]

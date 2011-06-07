@@ -36,10 +36,6 @@ module Constructable
       end
     end
 
-    def permissions
-      {:readable => :reader,:writable => :writer}.select { |permission,_| self.send permission }.map(&:last)
-    end
-
     def ivar_symbol
       ('@' + self.name.to_s).to_sym
     end

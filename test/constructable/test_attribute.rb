@@ -90,19 +90,8 @@ describe 'Attribute' do
   describe 'permission' do
     it 'should detect accessible attributes' do
       attribute = Attribute.new( :readable_and_writable, accessible: true)
-      assert_equal [:reader, :writer], attribute.permissions
-    end
-
-    it 'should not be public by default' do
-      attribute = Attribute.new( :test_default)
-      assert_equal [] , attribute.permissions
-    end
-
-    [:writable, :readable].each do |perm|
-      it "should be definable for #{perm}" do
-        attribute = Attribute.new(:"#{perm}_option", perm => true)
-        assert_equal [(perm[0..3] + 'er').to_sym], attribute.permissions
-      end
+      assert_equal true, attribute.readable
+      assert_equal true, attribute.writable
     end
   end
 end
