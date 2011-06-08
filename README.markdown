@@ -27,11 +27,11 @@ class ProgrammingLanguage
   constructable [:paradigms,
     readable: true,
     required: true,
-    validate: ->(value) { value.is_a?(Array) }]
+    validate_type: Array]
 end
 
 c = ProgrammingLanguage.new(paradigms: :functional)
-\#  raises AttributeError, ':paradigms did not pass validation'
+\#  raises AttributeError, ':paradigms needs to be of type Integer'
 
 ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
 ruby.paradigms

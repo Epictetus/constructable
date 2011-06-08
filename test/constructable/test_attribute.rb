@@ -65,7 +65,7 @@ describe 'Attribute' do
           attribute.process(foo: 'notanumber')
         rescue Exception => e
           assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
-          assert_equal ':foo is not of validate_type Integer', e.message
+          assert_equal ':foo needs to be of type Integer', e.message
         else
           assert false, 'AttributeError was not raised'
         end
