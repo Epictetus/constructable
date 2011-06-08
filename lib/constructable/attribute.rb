@@ -3,11 +3,11 @@ module Constructable
     ATTRIBUTES = [:writable, :readable, :accessible, :required, :validate, :default, :validate_type, :converter]
     attr_accessor *ATTRIBUTES, :name
 
-    REQUIRED_REQUIREMENT= {
-        name: :required,
-        message: proc {":#{self.name} is a required attribute"},
-        check: ->(hash) { hash.has_key?(self.name) }
-      }
+    REQUIRED_REQUIREMENT = {
+      name: :required,
+      message: proc {":#{self.name} is a required attribute"},
+      check: ->(hash) { hash.has_key?(self.name) }
+    }
 
     REQUIREMENTS = [
       {
@@ -42,7 +42,9 @@ module Constructable
 
     def check_for_requirement(requirement, constructor_hash)
       if self.send requirement[:name]
-        raise AttributeError, instance_eval(&requirement[:message]) unless self.instance_exec(constructor_hash,&requirement[:check])
+        unless self.instance_exec(constructor_hash,&requirement[:check])
+          raise AttributeError, instance_eval(&requirement[:message])
+        end
       end
     end
     private :check_for_requirement

@@ -1,6 +1,5 @@
 module Constructable
   class Constructor
-    PERMISSION_TO_SETTER = { writable: '=' }
     def initialize(klass)
       @attributes = []
       @klass = klass
