@@ -9,33 +9,33 @@ Provides a powerful class macro for defining and configuring constructable attri
 
 ## Usage
 <pre><code>
-  class Foo
-    constructable [:bar, :readable => true], [:baz, :required => true, :readable => true]
-  end
+class Foo
+  constructable [:bar, :readable => true], [:baz, :required => true, :readable => true]
+end
 
-  foo = Foo.new(bar: 5)
-  # raises AttributeError, ':baz is a required attribute'
+foo = Foo.new(bar: 5)
+# raises AttributeError, ':baz is a required attribute'
 
-  foo = Foo.new(baz: 7, bar: 5)
+foo = Foo.new(baz: 7, bar: 5)
 
-  foo.bar
-  # => 5
-  foo.baz
-  # => 7
+foo.bar
+# => 5
+foo.baz
+# => 7
 
-  class ProgrammingLanguage
-    constructable [:paradigms,
-      readable: true,
-      required: true,
-      validate: ->(value) { value.is_a?(Array) }]
-  end
+class ProgrammingLanguage
+  constructable [:paradigms,
+    readable: true,
+    required: true,
+    validate: ->(value) { value.is_a?(Array) }]
+end
 
-  c = ProgrammingLanguage.new(paradigms: :functional)
-  #  raises AttributeError, ':paradigms did not pass validation'
+c = ProgrammingLanguage.new(paradigms: :functional)
+#  raises AttributeError, ':paradigms did not pass validation'
 
-  ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
-  ruby.paradigms
-  # => [:object_oriented, :functional]
+ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
+ruby.paradigms
+# => [:object_oriented, :functional]
 </pre></code>
 
 
