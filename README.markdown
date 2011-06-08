@@ -1,6 +1,7 @@
 # Constructable [![Build Status](http://travis-ci.org/mkorfmann/constructable.png)](http://travis-ci.org/mkorfmann/constructable)
 
 Provides a powerful class macro for defining and configuring constructable attributes of a class.
+
 ## Facts
 
 * Doesn't break default initialize behaviour(see test/constructable/test_constructable 'should not break the initialize behaviour')
