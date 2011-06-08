@@ -10,7 +10,7 @@ Provides a powerful class macro for defining and configuring constructable attri
 * Provides a granular control on how accessible your attributes are(no need to define attr_* yourself)
 
 ## Usage
-<pre><code>
+```ruby
 class Foo
   constructable [:bar, :readable => true], [:baz, :required => true, :readable => true]
 end
@@ -38,7 +38,7 @@ c = ProgrammingLanguage.new(paradigms: :functional)
 ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
 ruby.paradigms
 \# => [:object_oriented, :functional]
-</pre></code>
+```
 
 
 ## Contributing to constructable
