@@ -1,5 +1,4 @@
-# Constructable
-[![Build Status](http://travis-ci.org/mkorfmann/constructable.png)](http://travis-ci.org/mkorfmann/constructable)
+# Constructable [![Build Status](http://travis-ci.org/mkorfmann/constructable.png)](http://travis-ci.org/mkorfmann/constructable)
 
 Provides a powerful class macro for defining and configuring constructable attributes of a class.
 ## Facts
