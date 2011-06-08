@@ -16,14 +16,14 @@ class Foo
 end
 
 foo = Foo.new(bar: 5)
-\# raises AttributeError, ':baz is a required attribute'
+# raises AttributeError, ':baz is a required attribute'
 
 foo = Foo.new(baz: 7, bar: 5)
 
 foo.bar
-\# => 5
+# => 5
 foo.baz
-\# => 7
+# => 7
 
 class ProgrammingLanguage
   constructable [:paradigms,
@@ -33,11 +33,11 @@ class ProgrammingLanguage
 end
 
 c = ProgrammingLanguage.new(paradigms: :functional)
-\#  raises AttributeError, ':paradigms needs to be of type Array'
+#  raises AttributeError, ':paradigms needs to be of type Array'
 
 ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
 ruby.paradigms
-\# => [:object_oriented, :functional]
+# => [:object_oriented, :functional]
 ```
 
 
