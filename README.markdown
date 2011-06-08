@@ -31,7 +31,7 @@ class ProgrammingLanguage
 end
 
 c = ProgrammingLanguage.new(paradigms: :functional)
-\#  raises AttributeError, ':paradigms needs to be of type Integer'
+\#  raises AttributeError, ':paradigms needs to be of type Array'
 
 ruby = ProgrammingLanguage.new(paradigms: [:object_oriented, :functional])
 ruby.paradigms
