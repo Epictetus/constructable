@@ -26,6 +26,12 @@ describe 'Constructor' do
       instance = @klass.new(foo: 1, bar: 2)
       assert_equal({foo: 1}, instance.foobar)
     end
+
+    it 'has a nice syntax' do
+      @klass.constructable foobar: [:foo, :bar]
+      instance = @klass.new(foo: 1, bar: 2)
+      assert_equal({foo: 1, bar: 2}, instance.foobar)
+    end
   end
 
   describe 'permission' do

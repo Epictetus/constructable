@@ -15,7 +15,9 @@ module Constructable
 
 
     def define_attributes(attributes)
-      @attributes.concat attributes.map! { |c| Attribute.new(*c) }
+      attributes = generate_attributes(attributes)
+      @attributes.concat attributes
+
       attributes = @attributes
       attributes.each do |attribute|
         @klass.class_eval do
@@ -41,6 +43,20 @@ module Constructable
       @attributes.each do |attributes|
         obj.instance_variable_set(attributes.ivar_symbol, attributes.process(constructor_hash))
       end
+    end
+
+    def generate_attributes(attributes)
+      attributes.map do |dynamic_args|
+        if Hash === dynamic_args
+          dynamic_args.map do |name, attributes|
+            attributes.map do |attribute|
+              Attribute.new(*attribute).tap { |a| a.group = dynamic_args.keys.first }
+            end
+          end
+        else
+          Attribute.new(*dynamic_args)
+        end
+      end.flatten
     end
   end
 end
