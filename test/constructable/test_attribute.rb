@@ -1,6 +1,17 @@
 require 'helper'
 include Constructable
 describe 'Attribute' do
+
+  describe 'value' do
+    it 'returns the last processed value' do
+      attribute = Attribute.new(:foo)
+      attribute.process({foo: :bar})
+      assert_equal :bar, attribute.value
+      attribute.process({foo: 1})
+      assert_equal 1, attribute.value
+    end
+  end
+
   describe 'name' do
     it 'returns the name' do
       attribute = Attribute.new(:attribute)

@@ -1,7 +1,8 @@
 module Constructable
   class Attribute
-    ATTRIBUTES = [:writable, :readable, :accessible, :required, :validate, :default, :validate_type, :converter]
+    ATTRIBUTES = [:group, :writable, :readable, :accessible, :required, :validate, :default, :validate_type, :converter]
     attr_accessor *ATTRIBUTES, :name
+    attr_reader :value
 
     REQUIRED_REQUIREMENT = {
       name: :required,
@@ -24,8 +25,8 @@ module Constructable
 
     def initialize(name, options = {})
       @name = name
-      options.each do |option, value|
-        self.send(:"#{option}=", value )
+      ATTRIBUTES.each do |attribute|
+        self.send(:"#{attribute}=", options[attribute])
       end
     end
 
@@ -59,7 +60,7 @@ module Constructable
       else
         check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
         self.default
-      end
+      end.tap { |value| @value = value }
     end
   end
 end

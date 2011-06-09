@@ -16,15 +16,22 @@ module Constructable
 
     def define_attributes(attributes)
       @attributes.concat attributes.map! { |c| Attribute.new(*c) }
+      attributes = @attributes
       attributes.each do |attribute|
         @klass.class_eval do
-          define_method(attribute.name) do 
-            instance_variable_get attribute.ivar_symbol
-          end if attribute.readable
+
+          attr_reader attribute.name if attribute.readable
 
           define_method(:"#{attribute.name}=") do |value|
             instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
           end if attribute.writable
+
+          define_method(attribute.group) do
+            attributes.group_by(&:group)[attribute.group].inject({}) do |hash, attribute|
+              hash[attribute.name] = attribute.value
+              hash
+            end
+          end if attribute.group && !method_defined?(attribute.group)
         end
       end
     end
