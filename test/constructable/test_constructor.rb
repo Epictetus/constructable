@@ -32,6 +32,12 @@ describe 'Constructor' do
       instance = @klass.new(foo: 1, bar: 2)
       assert_equal({foo: 1, bar: 2}, instance.foobar)
     end
+
+    it 'ONLY returns attributes acutally provided' do
+      @klass.constructable foobar: [:foo, :bar]
+      instance = @klass.new(foo: 1)
+      assert_equal false, instance.foobar.has_key?(:bar)
+    end
   end
 
   describe 'permission' do

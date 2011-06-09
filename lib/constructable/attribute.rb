@@ -30,6 +30,10 @@ module Constructable
       end
     end
 
+    def defined?
+      @defined
+    end
+
     def accessible=(boolean)
       if boolean
         self.readable = true
@@ -56,9 +60,11 @@ module Constructable
           check_for_requirement(requirement, constructor_hash)
         end
         value = constructor_hash[self.name]
+        @defined = true
         self.converter ? converter.(value) : value
       else
         check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
+        @defined = false
         self.default
       end.tap { |value| @value = value }
     end
