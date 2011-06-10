@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{constructable}
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Manuel Korfmann"]
@@ -33,7 +33,6 @@ See the documentation for Constructable::Constructable#constructable or the READ
     "constructable.gemspec",
     "lib/constructable.rb",
     "lib/constructable/attribute.rb",
-    "lib/constructable/constructable.rb",
     "lib/constructable/constructor.rb",
     "lib/constructable/core_ext.rb",
     "lib/constructable/exceptions.rb",
