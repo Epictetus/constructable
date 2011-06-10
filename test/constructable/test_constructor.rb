@@ -14,32 +14,6 @@ describe 'Constructor' do
     end
   end
 
-  describe 'Attribute#group' do
-    it 'returns attributes included in the group along with their values' do
-      @klass.constructable [:foo, group: :foobar], [:bar, group: :foobar]
-      instance = @klass.new(foo: 1, bar: 2)
-      assert_equal({foo: 1, bar: 2}, instance.foobar)
-    end
-
-    it 'ONLY returns attributes included in that group' do
-      @klass.constructable [:foo, group: :foobar], [:bar]
-      instance = @klass.new(foo: 1, bar: 2)
-      assert_equal({foo: 1}, instance.foobar)
-    end
-
-    it 'has a nice syntax' do
-      @klass.constructable foobar: [:foo, :bar]
-      instance = @klass.new(foo: 1, bar: 2)
-      assert_equal({foo: 1, bar: 2}, instance.foobar)
-    end
-
-    it 'ONLY returns attributes acutally provided' do
-      @klass.constructable foobar: [:foo, :bar]
-      instance = @klass.new(foo: 1)
-      assert_equal false, instance.foobar.has_key?(:bar)
-    end
-  end
-
   describe 'permission' do
     it 'should allow writable attributes' do
       @klass.constructable [:writable_attribute, writable: true]
