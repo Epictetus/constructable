@@ -17,6 +17,11 @@ describe 'Attribute' do
   end
 
   describe 'process' do
+    it 'intepretes nil but not false as undefined' do
+      attribute = Attribute.new(:foo, default: true)
+      assert_equal false, attribute.process({foo: false})
+    end
+
     it 'should raise nothing if no attributes are specified' do
       attribute = Attribute.new(:foo)
       assert_equal 'bar', attribute.process({foo: 'bar'})

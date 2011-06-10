@@ -51,7 +51,7 @@ module Constructable
     private :check_for_requirement
 
     def process(constructor_hash)
-      if constructor_hash[self.name]
+      unless constructor_hash[self.name].nil?
         REQUIREMENTS.each do |requirement|
           check_for_requirement(requirement, constructor_hash)
         end
