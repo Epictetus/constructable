@@ -1,5 +1,6 @@
 module Constructable
   module Constructable
+    attr_accessor :constructor
     # @example
     #
     #  class Foo
@@ -32,8 +33,8 @@ module Constructable
     #
     # @param [Array<[Array<Symbol, Hash>]>] args an array of symbols or arrays: the name of the attribute and it's configuration
     def constructable(*args)
-      @__constructor ||= Constructor.new(self)
-      @__constructor.define_attributes(args)
+      @constructor ||= Constructor.new(self)
+      @constructor.define_attributes(args)
       return nil
     end
   end

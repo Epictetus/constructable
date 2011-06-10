@@ -1,5 +1,7 @@
 module Constructable
   class Constructor
+    attr_accessor :attributes
+
     def initialize(klass)
       @attributes = []
       @klass = klass
@@ -41,6 +43,10 @@ module Constructable
       attributes.map do |attribute|
         Attribute.new(*attribute)
       end
+    end
+
+    def attribute(symbol)
+      self.attributes.find { |attribute| attribute.name == symbol }
     end
   end
 end

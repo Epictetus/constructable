@@ -14,6 +14,15 @@ describe 'Constructor' do
     end
   end
 
+  describe 'attribute' do
+    it 'returns the attribute matching the symbol' do
+      @klass.constructable :foo, :bar
+      attribute = @klass.constructor.attribute(:foo)
+      assert_equal Attribute, attribute.class
+      assert_equal :foo, attribute.name
+    end
+  end
+
   describe 'permission' do
     it 'should allow writable attributes' do
       @klass.constructable [:writable_attribute, writable: true]
