@@ -14,12 +14,11 @@ describe 'Constructor' do
     end
   end
 
-  describe 'attribute' do
+  describe 'Class#attributes' do
     it 'returns the attribute matching the symbol' do
       @klass.constructable :foo, :bar
-      attribute = @klass.constructor.attribute(:foo)
-      assert_equal Attribute, attribute.class
-      assert_equal :foo, attribute.name
+      instance = @klass.new(foo: 6)
+      assert_equal({ foo: 6 }, instance.attributes)
     end
   end
 

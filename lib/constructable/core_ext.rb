@@ -1,7 +1,6 @@
 module Constructable
   class ::Class 
     include Constructable
-    attr_accessor :constructor
 
     # @example
     #

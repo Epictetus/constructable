@@ -60,7 +60,7 @@ module Constructable
       else
         check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
         self.default
-      end.tap { |value| @value = value }
+      end
     end
   end
 end

@@ -13,6 +13,8 @@ module Constructable
         obj.send :initialize, *args, &block
         obj
       end
+
+      self.define_attributes_method
     end
 
 
@@ -45,8 +47,17 @@ module Constructable
       end
     end
 
-    def attribute(symbol)
-      self.attributes.find { |attribute| attribute.name == symbol }
+    def define_attributes_method
+      constructor = self
+      @klass.class_eval do
+        define_method :attributes do
+          Hash[
+            constructor.attributes
+            .map { |a| [a.name,instance_variable_get(a.ivar_symbol)] }
+            .select(&:last)
+          ]
+        end
+      end
     end
   end
 end
