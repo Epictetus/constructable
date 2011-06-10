@@ -1,7 +1,6 @@
 require 'constructable/exceptions'
 require 'constructable/constructor'
-require 'constructable/constructable'
-require 'constructable/core_ext'
 require 'constructable/attribute'
+require 'constructable/core_ext'
 module Constructable
 end
