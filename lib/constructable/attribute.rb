@@ -7,7 +7,7 @@ module Constructable
     REQUIRED_REQUIREMENT = {
       name: :required,
       message: proc {":#{self.name} is a required attribute"},
-      check: ->(hash) { hash.has_key?(self.name) }
+      check: ->(hash) { hash[self.name] }
     }
 
     REQUIREMENTS = [
@@ -28,10 +28,6 @@ module Constructable
       ATTRIBUTES.each do |attribute|
         self.send(:"#{attribute}=", options[attribute])
       end
-    end
-
-    def defined?
-      @defined
     end
 
     def accessible=(boolean)
@@ -55,16 +51,14 @@ module Constructable
     private :check_for_requirement
 
     def process(constructor_hash)
-      if constructor_hash.has_key?(self.name)
+      if constructor_hash[self.name]
         REQUIREMENTS.each do |requirement|
           check_for_requirement(requirement, constructor_hash)
         end
         value = constructor_hash[self.name]
-        @defined = true
         self.converter ? converter.(value) : value
       else
         check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
-        @defined = false
         self.default
       end.tap { |value| @value = value }
     end

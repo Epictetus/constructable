@@ -30,7 +30,7 @@ module Constructable
 
           define_method(attribute.group) do
             attributes.group_by(&:group)[attribute.group].inject({}) do |hash, attribute|
-              hash[attribute.name] = attribute.value if attribute.defined?
+              hash[attribute.name] = attribute.value if attribute.value
               hash
             end
           end if attribute.group && !method_defined?(attribute.group)
