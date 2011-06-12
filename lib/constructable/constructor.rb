@@ -6,7 +6,7 @@ module Constructable
       @attributes = []
       @klass = klass
       self.redefine_new(klass)
-      self.define_attributes_method
+      self.define_concstructable_attributes_method
     end
 
     def redefine_new(klass)
@@ -50,10 +50,10 @@ module Constructable
       end
     end
 
-    def define_attributes_method
+    def define_concstructable_attributes_method
       constructor = self
       @klass.class_eval do
-        define_method :attributes do
+        define_method :constructable_attributes do
           Hash[
             constructor.attributes
             .map { |a| [a.name,instance_variable_get(a.ivar_symbol)] }
