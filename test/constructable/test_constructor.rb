@@ -44,4 +44,20 @@ describe 'Constructor' do
       assert_equal 'hello', instance.accessible_attribute
     end
   end
+
+  describe 'module support' do
+    before do
+      module Foo
+        constructable [:foo, readable: true]
+      end
+    end
+
+    it 'allows cosntructing classes after including the module' do
+      class Bar
+        include Foo
+      end
+      bar = Bar.new(foo: 'foo')
+      assert_equal 'foo', bar.foo
+    end
+  end
 end

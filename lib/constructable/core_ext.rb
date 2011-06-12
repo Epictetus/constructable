@@ -34,9 +34,16 @@ module Constructable
     #
     # @param [Array<[Array<Symbol, Hash>]>] args an array of symbols or arrays: the name of the attribute and it's configuration
     def constructable(*args)
-      @constructor ||= Constructor.new(self)
-      @constructor.define_attributes(args)
-      return nil
+      case self
+      when Class
+        @constructor ||= Constructor.new(self)
+        @constructor.define_attributes(args)
+        return nil
+      when Module
+        define_singleton_method :included do |klass|
+          klass.constructable *args
+        end
+      end
     end
   end
 end
