@@ -1,5 +1,5 @@
 module Constructable
-  class ::Class 
+  class ::Module
     include Constructable
 
     # @example
