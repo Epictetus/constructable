@@ -37,7 +37,7 @@ describe 'integration' do
           klass = Class.new
           klass.constructable [:bar, accessible: true]
           klass.class_eval do
-            def initialize
+            def initialize(options = {})
               self.bar = 20
             end
           end

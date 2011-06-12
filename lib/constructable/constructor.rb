@@ -8,12 +8,11 @@ module Constructable
       constructor = self
       @klass.define_singleton_method(:new) do |*args, &block|
         obj = self.allocate
-        constructor_hash = Hash === args.last ? args.pop : {}
+        constructor_hash = Hash === args.last ? args.last : {}
         constructor.construct(constructor_hash, obj)
         obj.send :initialize, *args, &block
         obj
       end
-
       self.define_attributes_method
     end
 
