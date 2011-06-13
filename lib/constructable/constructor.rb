@@ -2,10 +2,9 @@ module Constructable
   class Constructor
     attr_accessor :attributes
 
-    def initialize(klass)
+    def initialize(base)
       @attributes = []
-      @klass = klass
-      self.redefine_new(klass)
+      @base = base
       self.define_concstructable_attributes_method
     end
 
@@ -27,17 +26,12 @@ module Constructable
 
       attributes = @attributes
       attributes.each do |attribute|
-        @klass.class_eval do
-          m = Module.new.tap do |m|
-            m.module_eval do
-              attr_reader attribute.name if attribute.readable
+        @base.class_eval do
+          attr_reader attribute.name if attribute.readable
 
-              define_method(:"#{attribute.name}=") do |value|
-                instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
-              end if attribute.writable
-            end
-          end
-          include m
+          define_method(:"#{attribute.name}=") do |value|
+            instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
+          end if attribute.writable
         end
       end
     end
@@ -57,7 +51,7 @@ module Constructable
 
     def define_concstructable_attributes_method
       constructor = self
-      @klass.class_eval do
+      @base.class_eval do
         define_method :constructable_attributes do
           Hash[
             constructor.attributes

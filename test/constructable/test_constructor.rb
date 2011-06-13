@@ -2,6 +2,7 @@ require 'helper'
 describe 'Constructor' do
   before do
     @klass = Class.new
+    @module = Module.new
   end
 
   describe 'define_attributes' do
@@ -13,19 +14,40 @@ describe 'Constructor' do
       end
     end
 
-    it 'allows redefining getters ' do
-      @klass.class_eval { define_method(:integer){ 1 } }
-      @klass.constructable [:integer, validate_type: Integer, readable: true]
-      instance = @klass.new(integer: 2)
-      assert_equal 1, instance.integer
-    end
+    describe 'class' do
+      it 'allows redefining getters ' do
+        @klass.constructable [:integer, validate_type: Integer, accessible: true]
+        @klass.class_eval { define_method(:integer){ 1 } }
+        instance = @klass.new(integer: 2)
+        assert_equal 1, instance.integer
+      end
 
-    it 'allows redefining setters ' do
-      @klass.class_eval { def integer=(foo);@integer = 1;end }
-      @klass.constructable [:integer, validate_type: Integer, readable: true]
-      instance = @klass.new(integer: 4)
-      instance.integer = 5
-      assert_equal 1, instance.integer
+      it 'allows redefining setters ' do
+        @klass.constructable [:integer, validate_type: Integer, accessible: true]
+        @klass.class_eval { def integer=(foo);@integer = 1;end }
+        instance = @klass.new(integer: 4)
+        instance.integer = 5
+        assert_equal 1, instance.integer
+      end
+
+    end
+    describe 'module' do
+      it 'allows redefining getters ' do
+        @module.constructable [:integer, validate_type: Integer, accessible: true]
+        @module.module_eval { def integer;1;end }
+        @klass.send :include,@module
+        instance = @klass.new(integer: 2)
+        assert_equal 1, instance.integer
+      end
+
+      it 'allows redefining setters ' do
+        @module.constructable [:integer, validate_type: Integer, accessible: true]
+        @module.module_eval { def integer=(foo);@integer = 1;end }
+        @klass.send :include,@module
+        instance = @klass.new(integer: 4)
+        instance.integer = 5
+        assert_equal 1, instance.integer
+      end
     end
   end
 
