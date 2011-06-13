@@ -28,11 +28,16 @@ module Constructable
       attributes = @attributes
       attributes.each do |attribute|
         @klass.class_eval do
-          attr_reader attribute.name if attribute.readable
+          m = Module.new.tap do |m|
+            m.module_eval do
+              attr_reader attribute.name if attribute.readable
 
-          define_method(:"#{attribute.name}=") do |value|
-            instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
-          end if attribute.writable
+              define_method(:"#{attribute.name}=") do |value|
+                instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
+              end if attribute.writable
+            end
+          end
+          include m
         end
       end
     end

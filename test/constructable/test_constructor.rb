@@ -12,6 +12,21 @@ describe 'Constructor' do
         instance.integer = 6.6
       end
     end
+
+    it 'allows redefining getters ' do
+      @klass.class_eval { define_method(:integer){ 1 } }
+      @klass.constructable [:integer, validate_type: Integer, readable: true]
+      instance = @klass.new(integer: 2)
+      assert_equal 1, instance.integer
+    end
+
+    it 'allows redefining setters ' do
+      @klass.class_eval { def integer=(foo);@integer = 1;end }
+      @klass.constructable [:integer, validate_type: Integer, readable: true]
+      instance = @klass.new(integer: 4)
+      instance.integer = 5
+      assert_equal 1, instance.integer
+    end
   end
 
   describe 'Class#constructable_attributes' do
