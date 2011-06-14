@@ -36,13 +36,12 @@ module Constructable
     def constructable(*args)
       @constructor ||= Constructor.new(self)
       @constructor.define_attributes(args)
-
       case self
       when Class
         @constructor.redefine_new(self)
       when Module
-        define_singleton_method :included do |klass|
-          @constructor.redefine_new(klass) if Class === klass
+        define_singleton_method :included do |base|
+          @constructor.redefine_new(base) if Class === base
         end
       end
       return nil

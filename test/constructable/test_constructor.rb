@@ -14,39 +14,72 @@ describe 'Constructor' do
       end
     end
 
-    describe 'class' do
-      it 'allows redefining getters ' do
-        @klass.constructable [:integer, validate_type: Integer, accessible: true]
-        @klass.class_eval { define_method(:integer){ 1 } }
-        instance = @klass.new(integer: 2)
-        assert_equal 1, instance.integer
+    describe 'redefining' do
+
+      describe 'class' do
+        it 'getters ' do
+          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.class_eval { define_method(:integer){ 1 } }
+          instance = @klass.new(integer: 2)
+          assert_equal 1, instance.integer
+        end
+
+        it 'setters ' do
+          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.class_eval { def integer=(foo);@integer = 1;end }
+          instance = @klass.new(integer: 4)
+          instance.integer = 5
+          assert_equal 1, instance.integer
+        end
+
+      end
+      describe 'module' do
+        before do
+          @module.constructable [:integer, validate_type: Integer, accessible: true]
+        end
+
+        it 'getters ' do
+          @module.module_eval { def integer;1;end }
+          @klass.send :include,@module
+          instance = @klass.new(integer: 2)
+          assert_equal 1, instance.integer
+        end
+
+        it 'setters ' do
+          @module.module_eval { def integer=(foo);@integer = 1;end }
+          @klass.send :include,@module
+          instance = @klass.new(integer: 4)
+          instance.integer = 5
+          assert_equal 1, instance.integer
+        end
+
+        it 'also works for multiple inclusion' do
+          @module.module_eval { def integer=(foo);@integer = 1;end }
+          other_module = Module.new
+          other_module.send :include, @module
+          @klass.send :include, other_module
+          instance = @klass.new(integer: 4)
+          instance.integer = 5
+          assert_equal 1, instance.integer
+        end
       end
 
-      it 'allows redefining setters ' do
-        @klass.constructable [:integer, validate_type: Integer, accessible: true]
-        @klass.class_eval { def integer=(foo);@integer = 1;end }
-        instance = @klass.new(integer: 4)
-        instance.integer = 5
-        assert_equal 1, instance.integer
-      end
+      describe 'allows to super to the generated method' do
+        it 'gets' do
+          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.class_eval { def integer; super ;end }
+          instance = @klass.new(integer: 2)
+          assert_equal 2, instance.integer
+        end
 
-    end
-    describe 'module' do
-      it 'allows redefining getters ' do
-        @module.constructable [:integer, validate_type: Integer, accessible: true]
-        @module.module_eval { def integer;1;end }
-        @klass.send :include,@module
-        instance = @klass.new(integer: 2)
-        assert_equal 1, instance.integer
-      end
-
-      it 'allows redefining setters ' do
-        @module.constructable [:integer, validate_type: Integer, accessible: true]
-        @module.module_eval { def integer=(foo);@integer = 1;end }
-        @klass.send :include,@module
-        instance = @klass.new(integer: 4)
-        instance.integer = 5
-        assert_equal 1, instance.integer
+        it 'sets' do
+          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.class_eval { def integer=(value); super ;end }
+          instance = @klass.new(integer: 2)
+          assert_raises Constructable::AttributeError do
+            instance.integer = :not_an_integer
+          end
+        end
       end
     end
   end

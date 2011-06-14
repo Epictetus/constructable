@@ -4,7 +4,9 @@ module Constructable
 
     def initialize(base)
       @attributes = []
+      @module = Module.new
       @base = base
+      @base.send :include, @module
       self.define_concstructable_attributes_method
     end
 
@@ -26,7 +28,7 @@ module Constructable
 
       attributes = @attributes
       attributes.each do |attribute|
-        @base.class_eval do
+        @module.module_eval do
           attr_reader attribute.name if attribute.readable
 
           define_method(:"#{attribute.name}=") do |value|
@@ -51,7 +53,7 @@ module Constructable
 
     def define_concstructable_attributes_method
       constructor = self
-      @base.class_eval do
+      @base.module_eval do
         define_method :constructable_attributes do
           Hash[
             constructor.attributes
