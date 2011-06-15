@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{constructable}
-  s.version = "0.2.5"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Manuel Korfmann"]
-  s.date = %q{2011-06-12}
+  s.date = %q{2011-06-15}
   s.description = %q{
 Adds the class macro Class#constructable to easily define what attributes a Class accepts provided as a hash to Class#new.
 Attributes can be configured in their behaviour in case they are not provided or are in the wrong format.
