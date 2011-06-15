@@ -69,6 +69,7 @@ describe 'Constructor' do
           instance.integer = 5
           assert_equal 1, instance.integer
         end
+
       end
 
       describe 'allows to super to the generated method' do
@@ -124,17 +125,38 @@ describe 'Constructor' do
 
   describe 'module support' do
     before do
-      module Foo
+      @foo = Module.new do
         constructable [:foo, readable: true]
       end
     end
 
     it 'allows cosntructing classes after including the module' do
-      class Bar
-        include Foo
-      end
-      bar = Bar.new(foo: 'foo')
+      @bar = Class.new
+      @bar.send :include, @foo
+
+      bar = @bar.new(foo: 'foo')
       assert_equal 'foo', bar.foo
+    end
+
+    describe 'shared setup' do
+
+      before do
+        @bar = Module.new
+        @bar.send :include, @foo
+
+        @baz = Class.new
+        @baz.send :include, @bar
+      end
+
+      it 'works for multiple inclusion' do
+        baz = @baz.new(foo: 'foo')
+        assert_equal 'foo', baz.foo
+      end
+
+      it 'always sets the @constructor ivar' do
+        assert_equal @foo.instance_variable_get(:@constructor), @baz.instance_variable_get(:@constructor)
+      end
+
     end
   end
 end

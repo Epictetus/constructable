@@ -40,9 +40,17 @@ module Constructable
       when Class
         @constructor.redefine_new(self)
       when Module
-        define_singleton_method :included do |base|
-          @constructor.redefine_new(base) if Class === base
+        redefine_new_logic = proc do |base|
+
+          base.instance_variable_set(:@constructor, @constructor)
+          if Class == base.class
+            @constructor.redefine_new(base)
+          elsif Module == base.class
+            base.define_singleton_method :included, &redefine_new_logic
+          end
         end
+
+        define_singleton_method :included, &redefine_new_logic
       end
       return nil
     end
