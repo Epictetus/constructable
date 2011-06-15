@@ -6,6 +6,13 @@ describe 'Constructor' do
   end
 
   describe 'define_attributes' do
+    it 'should define attr_accessors' do
+      klass = Class.new
+      klass.constructable([:foo, accessible: true])
+      assert_respond_to klass.new, :foo
+      assert_respond_to klass.new, :foo=
+    end
+
     it 'defines public setters validating like in the constructor' do
       @klass.constructable [:integer, validate_type: Integer, writable: true]
       instance = @klass.new
@@ -31,8 +38,8 @@ describe 'Constructor' do
           instance.integer = 5
           assert_equal 1, instance.integer
         end
-
       end
+
       describe 'module' do
         before do
           @module.constructable [:integer, validate_type: Integer, accessible: true]

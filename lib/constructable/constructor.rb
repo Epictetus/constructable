@@ -21,7 +21,6 @@ module Constructable
       end
     end
 
-
     def define_attributes(attributes)
       attributes = generate_attributes(attributes)
       @attributes.concat attributes

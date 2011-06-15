@@ -2,13 +2,6 @@ require 'helper'
 describe 'integration' do
   describe 'Class' do
     describe 'constructable' do
-      it 'should define attr_accessors' do
-        klass = Class.new
-        klass.constructable([:foo, accessible: true])
-        assert_respond_to klass.new, :foo
-        assert_respond_to klass.new, :foo=
-      end
-
       it 'should assign values found in the constructer hash' do
         klass = Class.new
         klass.constructable([:foo, readable: true])
@@ -45,17 +38,19 @@ describe 'integration' do
           assert_equal 20, instance.bar
         end
 
-        it 'works for methods with only arguments provided' do
+        it 'works for initialize methods with arguments' do
           klass = Class.new
           klass.constructable [:bar, accessible: true]
+          klass.send :attr_accessor, :baz
           klass.class_eval do
-            def initialize(bar)
-              self.bar = bar
+            def initialize(baz, options = {})
+              self.baz = baz
             end
           end
 
-          instance = klass.new(1)
-          assert_equal 1, instance.bar
+          instance = klass.new(1, bar: 5)
+          assert_equal 1, instance.baz
+          assert_equal 5, instance.bar
         end
       end
 
