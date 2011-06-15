@@ -1,0 +1,3 @@
+* make inclusion * 2 work
+* rewrite the attributes method to validate _AND_ make use of the user provided rewrite
+ * make a module and put all attributes in it, then include into the class

@@ -4,12 +4,6 @@ module Constructable
     attr_accessor *ATTRIBUTES, :name
     attr_reader :value
 
-    REQUIRED_REQUIREMENT = {
-      name: :required,
-      message: proc {":#{self.name} is a required attribute"},
-      check: ->(hash) { hash[self.name] }
-    }
-
     REQUIREMENTS = [
       {
         name: :validate,
@@ -55,10 +49,11 @@ module Constructable
         REQUIREMENTS.each do |requirement|
           check_for_requirement(requirement, constructor_hash)
         end
+
         value = constructor_hash[self.name]
         self.converter ? converter.(value) : value
       else
-        check_for_requirement(REQUIRED_REQUIREMENT, constructor_hash)
+        raise AttributeError, ":#{self.name} is a required attribute" if self.required
         self.default
       end
     end
