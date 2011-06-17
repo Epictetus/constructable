@@ -18,8 +18,7 @@ Then you can construct objects by providing a hash as the last argument
 to ProgrammingLanguage.new like this:
 
 ```ruby
-ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro
-Matsumoto')
+ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro Matsumoto')
 ```
 
 The object _ruby_ will now have the instance variables _@name_ and
@@ -33,16 +32,20 @@ both:
 ```ruby
 class Train
   constructable :speed, readable: true
-  constructable :driver, writable: true
+  constructable :next_stop, writable: true
   constructable :location, accsessible: true
 end
 
 orient_express = Train.new(speed: 100)
 orient_express.speed
 #=> 100
+
 orient_express.next_stop = 'Bucarest'
+# @next_stop == "Bucarest"
+
 orient_express.next_stop
 # raises NoMethodError
+
 orient_express.location = 'Budapest'
 orient_express.location
 #=> 'Budapest'
