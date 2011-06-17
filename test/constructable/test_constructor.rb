@@ -8,13 +8,13 @@ describe 'Constructor' do
   describe 'define_attributes' do
     it 'should define attr_accessors' do
       klass = Class.new
-      klass.constructable([:foo, accessible: true])
+      klass.constructable(:foo, accessible: true)
       assert_respond_to klass.new, :foo
       assert_respond_to klass.new, :foo=
     end
 
     it 'defines public setters validating like in the constructor' do
-      @klass.constructable [:integer, validate_type: Integer, writable: true]
+      @klass.constructable :integer, validate_type: Integer, writable: true
       instance = @klass.new
       assert_raises AttributeError do
         instance.integer = 6.6
@@ -25,14 +25,14 @@ describe 'Constructor' do
 
       describe 'class' do
         it 'getters ' do
-          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.constructable :integer, validate_type: Integer, accessible: true
           @klass.class_eval { define_method(:integer){ 1 } }
           instance = @klass.new(integer: 2)
           assert_equal 1, instance.integer
         end
 
         it 'setters ' do
-          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.constructable :integer, validate_type: Integer, accessible: true
           @klass.class_eval { def integer=(foo);@integer = 1;end }
           instance = @klass.new(integer: 4)
           instance.integer = 5
@@ -42,7 +42,7 @@ describe 'Constructor' do
 
       describe 'module' do
         before do
-          @module.constructable [:integer, validate_type: Integer, accessible: true]
+          @module.constructable :integer, validate_type: Integer, accessible: true
         end
 
         it 'getters ' do
@@ -74,14 +74,14 @@ describe 'Constructor' do
 
       describe 'allows to super to the generated method' do
         it 'gets' do
-          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.constructable :integer, validate_type: Integer, accessible: true
           @klass.class_eval { def integer; super ;end }
           instance = @klass.new(integer: 2)
           assert_equal 2, instance.integer
         end
 
         it 'sets' do
-          @klass.constructable [:integer, validate_type: Integer, accessible: true]
+          @klass.constructable :integer, validate_type: Integer, accessible: true
           @klass.class_eval { def integer=(value); super ;end }
           instance = @klass.new(integer: 2)
           assert_raises Constructable::AttributeError do
@@ -102,21 +102,21 @@ describe 'Constructor' do
 
   describe 'permission' do
     it 'should allow writable attributes' do
-      @klass.constructable [:writable_attribute, writable: true]
+      @klass.constructable :writable_attribute, writable: true
       instance = @klass.new
       instance.writable_attribute = "hello"
       assert_equal "hello", instance.instance_variable_get(:@writable_attribute)
     end
 
     it 'should allow readable attributes' do
-      @klass.constructable [:readable_attribute, readable: true]
+      @klass.constructable :readable_attribute, readable: true
       instance = @klass.new
       instance.instance_variable_set(:@readable_attribute, "hello")
       assert_equal "hello", instance.readable_attribute
     end
 
     it 'should allow accessible attributes' do
-      @klass.constructable [:accessible_attribute, accessible: true]
+      @klass.constructable :accessible_attribute, accessible: true
       instance = @klass.new
       instance.accessible_attribute = 'hello'
       assert_equal 'hello', instance.accessible_attribute
@@ -126,7 +126,7 @@ describe 'Constructor' do
   describe 'module support' do
     before do
       @foo = Module.new do
-        constructable [:foo, readable: true]
+        constructable :foo, readable: true
       end
     end
 

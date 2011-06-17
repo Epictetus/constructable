@@ -64,8 +64,14 @@ module Constructable
     end
 
     def generate_attributes(attributes)
+      options = if Hash === attributes.last
+        attributes.pop
+      else
+        {}
+      end
+
       attributes.map do |attribute|
-        Attribute.new(*attribute)
+        Attribute.new(attribute, options)
       end
     end
 
