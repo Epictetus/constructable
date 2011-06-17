@@ -115,7 +115,7 @@ to by default:
 
 ```ruby
 class Framework
-  constructable :opinonated, default: true
+  constructable :opinionated, default: true
 end
 
 rails = Framework.new
