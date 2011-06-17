@@ -88,6 +88,7 @@ end
 
 big_farm = Farm.new(animals: [:pigs, :cows])
 # raises AttributeError, ':animals has not passed validation'
+```
 
 ## Convert your attributes
 
