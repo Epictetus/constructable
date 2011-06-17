@@ -12,7 +12,7 @@ module Constructable
       },
       {
         name: :validate_type,
-        message: proc {":#{self.name} needs to be of type #{self.validate_type}"},
+        message: proc {":#{self.name} must be of type #{self.validate_type}"},
         check: ->(hash) { hash[self.name].is_a? self.validate_type }
       }
     ]

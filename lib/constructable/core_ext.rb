@@ -36,22 +36,6 @@ module Constructable
     def constructable(*args)
       @constructor ||= Constructor.new(self)
       @constructor.define_attributes(args)
-      case self
-      when Class
-        @constructor.redefine_new(self)
-      when Module
-        redefine_new_logic = proc do |base|
-
-          base.instance_variable_set(:@constructor, @constructor)
-          if Class == base.class
-            @constructor.redefine_new(base)
-          elsif Module == base.class
-            base.define_singleton_method :included, &redefine_new_logic
-          end
-        end
-
-        define_singleton_method :included, &redefine_new_logic
-      end
       return nil
     end
   end

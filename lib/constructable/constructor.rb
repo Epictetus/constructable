@@ -7,7 +7,26 @@ module Constructable
       @module = Module.new
       @base = base
       @base.send :include, @module
+      self.redefine_new_calling
       self.define_concstructable_attributes_method
+    end
+
+    def redefine_new_calling
+      case @base
+      when Class
+        self.redefine_new(@base)
+      when Module
+        constructor = self
+        redefine_new_logic = proc do |base|
+          base.instance_variable_set(:@constructor, constructor)
+          if Class == base.class
+            constructor.redefine_new(base)
+          elsif Module == base.class
+            base.define_singleton_method :included, &redefine_new_logic
+          end
+        end
+        @base.define_singleton_method :included, &redefine_new_logic
+      end
     end
 
     def redefine_new(klass)
