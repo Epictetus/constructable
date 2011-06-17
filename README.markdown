@@ -25,6 +25,34 @@ Matsumoto')
 The object _ruby_ will now have the instance variables _@name_ and
 _@creator_ set to _'Ruby'_ and _'Yukihiro Matsumoto'_.
 
+## Does not break initialize behaviour
+
+You can use initialize just like you'd normally do:
+
+```ruby
+class Animal
+  constructable [:biological_class, readable: true]
+  attr_reader :name
+
+  GuessBiologicalClass = { ['Pig', 'Cow', 'Whale'] => 'Mammal', [ 'Turtle', 'Caiman' ] => 'Reptile' }
+
+  def initialize(name, options = {})
+    @name = name
+    @biological_class = GuessBiologicalClass.find { |animals,_| animals.include?(name) }.last if options[:guess_biological_class]
+  end
+end
+
+rhinocerus = Animal.new('Rhinocerus', biological_class: 'Mammal')
+rhinocerus.biological_class
+#=> 'Mammal'
+
+turtle = Animal.new('Turtle', guess_biological_class: true)
+turtle.biological_class
+#=> 'Reptile'
+```
+
+
+
 ## Setters, Getters
 
 You can define your constructable attributes as readable, writable or
@@ -174,7 +202,7 @@ iphone_4.constructable_attributes
 ### WARNING
 
 The constructable macro also works for modules(not for themself, but for
-the clasess, you include them) but it will define the 'included' hook.
+the classes, you include them) but it will define the 'included' hook.
 So if you want to use the 'included' hook yourself, you either need to
 around alias it or to use another gem. I tried some things, but it is
 impossible, to provide all the magic of this gem, without defining
