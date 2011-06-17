@@ -5,7 +5,7 @@ module Constructable
     # @example
     #
     #  class Foo
-    #    constructable [:bar, :readable => true], [:baz, :required => true, :readable => true]
+    #    constructable :bar, :readable => true, :baz, :readable => true, required: true
     #  end
     #
     #  foo = Foo.new(bar: 5)
@@ -19,10 +19,10 @@ module Constructable
     #  # => 7
     #
     #  class ProgrammingLanguage
-    #    constructable [:paradigms,
+    #    constructable :paradigms,
     #      readable: true,
     #      required: true,
-    #      validate: ->(value) { value.is_a?(Array) }]
+    #      validate: ->(value) { value.is_a?(Array) }
     #  end
     #
     #  c = ProgrammingLanguage.new(paradigms: :functional)
