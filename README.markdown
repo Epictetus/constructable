@@ -88,13 +88,45 @@ end
 
 big_farm = Farm.new(animals: [:pigs, :cows])
 # raises AttributeError, ':animals has not passed validation'
+
+## Convert your attributes
+
+You can pass a converter as an option for a constructable attribute,
+so before attributes are set, their values get converted to the return
+value of the proc, you provided:
+
+```ruby
+class Box
+  constructable :width, :height, converter: ->(value) { value.to_f * 100 }
+end
+
+small_box = Box.new(width: '1.40', height: '2.40')
+small_box.width
+#=> 140
+small_box.height
+#=> 240
+```
+
+## Default values
+
+You can also specify, which values your constructable attributes are set
+to by default:
+
+```ruby
+class Framework
+  constructable :opinonated, default: true
+end
+
+rails = Framework.new
+rails.opinionated
+#=> true
+
 ```
 
 ## Redefining setters and getters
 
-You can redefine the setters and getters in your class but still get the
-validation, that the getters and setters provide, which the constructable 
-class macro set up for you:
+You can redefine the setters and getters provided by the constructable
+macro and still get all the validations and stuff by calling super:
 
 ```ruby
 class Song
