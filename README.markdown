@@ -5,7 +5,7 @@ Provides a powerful class macro for defining and configuring constructable attri
 
 ## Basic usage
 
-Define you're class like this:
+Define your class like this:
 
 ```ruby
 require 'constructable'
@@ -27,7 +27,7 @@ _@creator_ set to _'Ruby'_ and _'Yukihiro Matsumoto'_.
 
 ## Setters, Getters
 
-You can define you're constructable attributes as readable, writable or
+You can define your constructable attributes as readable, writable or
 both:
 
 ```ruby
@@ -51,7 +51,7 @@ orient_express.location
 ## Validations
 
 You can setup validation for constructable attributes, so the users of
-you're api won't provide weird values or none at all:
+your api won't provide weird values or none at all:
 
 ### required
 
@@ -61,7 +61,7 @@ class Holidays
 end
 
 summer_holidays = Holidays.new
-#=> raises AttributeError, ':when is a required attribute'
+# raises AttributeError, ':when is a required attribute'
 ```
 
 ### validate\_type
