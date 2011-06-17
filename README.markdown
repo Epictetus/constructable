@@ -120,6 +120,22 @@ song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
 ```
 
+## constructable\_attributes method
+
+You can all the constructable attributes and their values of your class as a hash,
+by calling the constructable_attributes method from within an instance
+of your class:
+
+```ruby
+class Gadget
+  constructable :fancyness, :name, :price
+end
+
+iphone_4 = Gadget.new(fancyness: 1.0/0, name: 'Iphone 4', price: 1.0/0)
+iphone_4.constructable_attributes
+#=> { :fancyness => Infinity, :name => "Iphone 4", :price => Infinity }
+```
+
 ## Modules
 
 ### WARNING
