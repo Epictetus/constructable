@@ -22,8 +22,8 @@ ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro
 Matsumoto')
 ```
 
-The object _ruby_ will now have the instance variables @name and
-@creator set to 'Ruby' and 'Yukihiro Matsumoto'.
+The object _ruby_ will now have the instance variables _@name_ and
+_@creator_ set to _'Ruby'_ and _'Yukihiro Matsumoto'_.
 
 ## Setters, Getters
 
@@ -101,7 +101,7 @@ class Song
   constructable :length, accessible: true, validate_type: Integer
 
   def length=(length)
-    if length.is_a?(String) && length ~= /(\d{,2}):(\d{,2})
+    if length.is_a?(String) && length =~ /(\d{,2}):(\d{,2})/
       @length = $1.to_i * 60 + $2.to_i
     else
      super
@@ -110,7 +110,12 @@ class Song
 end
 
 song = Song.new(length: 190)
+#=> #<Song:0x000001010ea040 @length=190>
+
 song.length = '1:30'
+song.length
+#=> 90
+
 song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
 ```
