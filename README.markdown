@@ -168,6 +168,7 @@ macro and still get all the validations and stuff by calling super:
 class Song
   constructable :length, accessible: true, validate_type: Integer
 
+
   def length=(length)
     if length.is_a?(String) && length =~ /(\d{,2}):(\d{,2})/
       @length = $1.to_i * 60 + $2.to_i
@@ -177,7 +178,7 @@ class Song
   end
 end
 
-song = Song.new(length: '3:10')
+song = Song.new(length: 190)
 #=> #<Song:0x000001010ea040 @length=190>
 
 song.length = '1:30'
@@ -186,27 +187,6 @@ song.length
 
 song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
-```
-
-You can also redefine private setters/getters the constructable
-class macro set up for you:
-
-```ruby
-class Song
-  constructable :name, validate_type: String
-  attribute_reader :name_history
-
-  def initialize(opts = {})
-    @name_history = []
-  end
-
- private
-
-  def name=(name)
-    @name_histoy += name
-    super
-  end
-end
 
 song = Song.new(name: 'Aaron', length: '6:01')
 #=> #<Song:0x0x00000100941528 @length=190 @name="Aaron" @name_history=["Aaron"]>
