@@ -50,7 +50,7 @@ module Constructable
           attr_reader attribute.name if attribute.readable
 
           define_method(:"#{attribute.name}=") do |value|
-            instance_variable_set attribute.ivar_symbol, attribute.process({ attribute.name => value})
+            instance_variable_set attribute.ivar_symbol, attribute.process(value)
           end if attribute.writable
         end
       end
@@ -58,8 +58,8 @@ module Constructable
 
     def construct(constructor_hash, obj)
       constructor_hash ||= {}
-      @attributes.each do |attributes|
-        obj.instance_variable_set(attributes.ivar_symbol, attributes.process(constructor_hash))
+      @attributes.each do |attribute|
+        obj.instance_variable_set(attribute.ivar_symbol, attribute.process(constructor_hash[attribute.name]))
       end
     end
 

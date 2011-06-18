@@ -19,19 +19,19 @@ describe 'Attribute' do
   describe 'process' do
     it 'intepretes nil but not false as undefined' do
       attribute = Attribute.new(:foo, default: true)
-      assert_equal false, attribute.process({foo: false})
+      assert_equal false, attribute.process(false)
     end
 
     it 'should raise nothing if no attributes are specified' do
       attribute = Attribute.new(:foo)
-      assert_equal 'bar', attribute.process({foo: 'bar'})
+      assert_equal 'bar', attribute.process('bar')
     end
 
     describe 'required attribute' do
       it 'should raise an AttributeError if required is set to true' do
         attribute = Attribute.new(:foo, required: true)
         begin
-          attribute.process(bar: 'blab')
+          attribute.process(nil)
         rescue Exception => e
           assert AttributeError === e
           assert_equal ':foo is a required attribute', e.message
@@ -45,7 +45,7 @@ describe 'Attribute' do
       it 'does not check for further requirements' do
         attribute = Attribute.new(:foo, validate_type: Integer)
         refute_raises do
-          attribute.process({})
+          attribute.process(nil)
         end
       end
     end
@@ -54,7 +54,7 @@ describe 'Attribute' do
       it 'should raise an AttributeError if the validator doesn\'t pass' do
         attribute = Attribute.new(:foo, validate: ->(number) { number < 5 })
         begin
-          attribute.process(foo: 6)
+          attribute.process(6)
         rescue Exception => e
           assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
           assert_equal ':foo did not pass validation', e.message
@@ -68,7 +68,7 @@ describe 'Attribute' do
       it 'should raise an AttributeError if the value has not the wanted validate_type' do
         attribute = Attribute.new(:foo, validate_type: Integer)
         begin
-          attribute.process(foo: 'notanumber')
+          attribute.process('notanumber')
         rescue Exception => e
           assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
           assert_equal ':foo must be of type Integer', e.message
@@ -81,14 +81,14 @@ describe 'Attribute' do
     describe 'default value' do
       it 'should be possible to provide a default value' do
         attribute = Attribute.new(:foo, default: :bar)
-        assert_equal :bar, attribute.process({})
+        assert_equal :bar, attribute.process(nil)
       end
     end
 
     describe 'convert value' do
       it 'is possible to define a converter(proc) which converts attribute values' do
         attribute = Attribute.new(:number, converter: ->(value) { value.to_i })
-        assert_equal 5, attribute.process({number: '5'})
+        assert_equal 5, attribute.process('5')
       end
     end
   end

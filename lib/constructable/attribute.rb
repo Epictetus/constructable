@@ -2,18 +2,17 @@ module Constructable
   class Attribute
     ATTRIBUTES = [:group, :writable, :readable, :accessible, :required, :validate, :default, :validate_type, :converter]
     attr_accessor *ATTRIBUTES, :name
-    attr_reader :value
 
     REQUIREMENTS = [
       {
         name: :validate,
         message: proc {":#{self.name} did not pass validation"},
-        check: ->(hash) { self.validate.call(hash[self.name])}
+        check: ->(value) { self.validate.call(value)}
       },
       {
         name: :validate_type,
         message: proc {":#{self.name} must be of type #{self.validate_type}"},
-        check: ->(hash) { hash[self.name].is_a? self.validate_type }
+        check: ->(value) { value.is_a? self.validate_type }
       }
     ]
 
@@ -35,22 +34,20 @@ module Constructable
       ('@' + self.name.to_s).to_sym
     end
 
-    def check_for_requirement(requirement, constructor_hash)
+    def check_for_requirement(requirement, value)
       if self.send requirement[:name]
-        unless self.instance_exec(constructor_hash,&requirement[:check])
+        unless self.instance_exec(value,&requirement[:check])
           raise AttributeError, instance_eval(&requirement[:message])
         end
       end
     end
     private :check_for_requirement
 
-    def process(constructor_hash)
-      unless constructor_hash[self.name].nil?
+    def process(value)
+      unless value.nil?
         REQUIREMENTS.each do |requirement|
-          check_for_requirement(requirement, constructor_hash)
+          check_for_requirement(requirement, value)
         end
-
-        value = constructor_hash[self.name]
         self.converter ? converter.(value) : value
       else
         raise AttributeError, ":#{self.name} is a required attribute" if self.required
