@@ -188,7 +188,7 @@ song.length
 song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
 
-song = Song.new(name: 'Aaron', length: '6:01')
+song = Song.new(name: 'Aaron', length: 190)
 #=> #<Song:0x0x00000100941528 @length=190 @name="Aaron" @name_history=["Aaron"]>
 ```
 
