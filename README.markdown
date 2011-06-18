@@ -149,7 +149,7 @@ to by default:
 
 ```ruby
 class Framework
-  constructable :opinionated, default: true
+  constructable :opinionated, default: ->{true}
 end
 
 rails = Framework.new
@@ -177,7 +177,7 @@ class Song
   end
 end
 
-song = Song.new(length: 190)
+song = Song.new(length: '3:10')
 #=> #<Song:0x000001010ea040 @length=190>
 
 song.length = '1:30'
@@ -188,6 +188,29 @@ song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
 ```
 
+You can also redefine private setters/getters the constructable
+class macro set up for you:
+
+```ruby
+class Song
+  constructable :name, validate_type: String
+  attribute_reader :name_history
+
+  def initialize(opts = {})
+    @name_history = []
+  end
+
+ private
+
+  def name=(name)
+    @name_histoy += name
+    super
+  end
+end
+
+song = Song.new(name: 'Aaron', length: '6:01')
+#=> #<Song:0x0x00000100941528 @length=190 @name="Aaron" @name_history=["Aaron"]>
+```
 
 ## constructable\_attributes method
 

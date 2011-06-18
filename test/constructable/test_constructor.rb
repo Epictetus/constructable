@@ -22,6 +22,14 @@ describe 'Constructor' do
     end
 
     describe 'redefining' do
+      describe 'constructing a class will call redefined setters' do
+        it 'calls the redefined setters' do
+          @klass.constructable :bacon, readable: true
+          @klass.class_eval { private; def bacon=(value);super(:zomg_bacon);end }
+          instance = @klass.new(bacon: :no_bacon)
+          assert_equal :zomg_bacon, instance.bacon
+        end
+      end
 
       describe 'class' do
         it 'getters ' do
@@ -87,6 +95,13 @@ describe 'Constructor' do
           assert_raises Constructable::AttributeError do
             instance.integer = :not_an_integer
           end
+        end
+
+        it 'sets for private setters/getters' do
+          @klass.constructable :integer, validate_type: Integer, readable: true
+          @klass.class_eval { private; def integer=(value); super(value.to_i) ;end }
+          instance = @klass.new(integer: '5')
+          assert_equal 5, instance.integer
         end
       end
     end

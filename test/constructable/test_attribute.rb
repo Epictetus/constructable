@@ -51,6 +51,13 @@ describe 'Attribute' do
     end
 
     describe 'validator' do
+      it 'checks for validate_type first' do
+        attribute = Attribute.new(:array, validate_type: Array, validate: ->(value) { value.all? { |s| String === s }})
+        assert_raises AttributeError do
+          attribute.process('obviously not an array')
+        end
+      end
+
       it 'should raise an AttributeError if the validator doesn\'t pass' do
         attribute = Attribute.new(:foo, validate: ->(number) { number < 5 })
         begin
@@ -80,7 +87,7 @@ describe 'Attribute' do
 
     describe 'default value' do
       it 'should be possible to provide a default value' do
-        attribute = Attribute.new(:foo, default: :bar)
+        attribute = Attribute.new(:foo, default: ->{ :bar })
         assert_equal :bar, attribute.process(nil)
       end
     end

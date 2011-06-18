@@ -5,14 +5,14 @@ module Constructable
 
     REQUIREMENTS = [
       {
-        name: :validate,
-        message: proc {":#{self.name} did not pass validation"},
-        check: ->(value) { self.validate.call(value)}
-      },
-      {
         name: :validate_type,
         message: proc {":#{self.name} must be of type #{self.validate_type}"},
         check: ->(value) { value.is_a? self.validate_type }
+      },
+      {
+        name: :validate,
+        message: proc {":#{self.name} did not pass validation"},
+        check: ->(value) { self.validate.call(value)}
       }
     ]
 
@@ -51,7 +51,7 @@ module Constructable
         self.converter ? converter.(value) : value
       else
         raise AttributeError, ":#{self.name} is a required attribute" if self.required
-        self.default
+        self.default.call if self.default
       end
     end
   end
