@@ -47,13 +47,11 @@ module Constructable
       attributes = @attributes
       attributes.each do |attribute|
         @module.module_eval do
-          attr_reader attribute.name
+          attr_reader attribute.name if attribute.readable
 
-          define_method(:"#{attribute.name}=") do |value|
+          define_method(attribute.attr_writer_symbol) do |value|
             instance_variable_set attribute.ivar_symbol, attribute.process(value)
-          end
-          private attribute.name unless attribute.readable
-          private :"#{attribute.name}=" unless attribute.writable
+          end if attribute.writable
         end
       end
     end
@@ -61,7 +59,7 @@ module Constructable
     def construct(constructor_hash, obj)
       constructor_hash ||= {}
       @attributes.each do |attribute|
-        obj.send :"#{attribute.name}=", constructor_hash[attribute.name]
+        obj.instance_variable_set attribute.ivar_symbol, attribute.process(constructor_hash[attribute.name])
       end
     end
 

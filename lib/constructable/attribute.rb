@@ -34,6 +34,10 @@ module Constructable
       ('@' + self.name.to_s).to_sym
     end
 
+    def attr_writer_symbol
+      (self.name.to_s + '=').to_sym
+    end
+
     def check_for_requirement(requirement, value)
       if self.send requirement[:name]
         unless self.instance_exec(value,&requirement[:check])
