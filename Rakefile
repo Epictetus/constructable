@@ -18,12 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/mkorfmann/constructable"
   gem.license = "MIT"
   gem.summary = %Q{Makes constructing objects through an attributes hash easier}
-  gem.description = %Q{
-Adds the class macro Class#constructable to easily define what attributes a Class accepts provided as a hash to Class#new.
-Attributes can be configured in their behaviour in case they are not provided or are in the wrong format.
-Their default value can also be defined and you have granular control on how accessible your attribute is.
-See the documentation for Constructable::Constructable#constructable or the README for more information.
-  }
+  gem.description = %Q{Makes constructing objects through an attributes hash easier}
   gem.email = "manu@korfmann.info"
   gem.authors = ["Manuel Korfmann"]
   # dependencies defined in Gemfile

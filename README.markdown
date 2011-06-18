@@ -24,33 +24,6 @@ ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro Matsumoto')
 The object _ruby_ will now have the instance variables _@name_ and
 _@creator_ set to _'Ruby'_ and _'Yukihiro Matsumoto'_.
 
-## Does not break initialize behaviour
-
-You can use initialize just like you'd normally do:
-
-```ruby
-class Animal
-  constructable [:biological_class, readable: true]
-  attr_reader :name
-
-  GuessBiologicalClass = { ['Pig', 'Cow', 'Whale'] => 'Mammal', [ 'Turtle', 'Caiman' ] => 'Reptile' }
-
-  def initialize(name, options = {})
-    @name = name
-    @biological_class = GuessBiologicalClass.find { |animals,_| animals.include?(name) }.last if options[:guess_biological_class]
-  end
-end
-
-rhinocerus = Animal.new('Rhinocerus', biological_class: 'Mammal')
-rhinocerus.biological_class
-#=> 'Mammal'
-
-turtle = Animal.new('Turtle', guess_biological_class: true)
-turtle.biological_class
-#=> 'Reptile'
-```
-
-
 
 ## Setters, Getters
 
@@ -78,6 +51,34 @@ orient_express.location = 'Budapest'
 orient_express.location
 #=> 'Budapest'
 ```
+
+
+## Does not break initialize behaviour
+
+You can use initialize just like you'd normally do:
+
+```ruby
+class Animal
+  constructable [:biological_class, readable: true]
+  attr_reader :name
+
+  GuessBiologicalClass = { ['Pig', 'Cow', 'Whale'] => 'Mammal', [ 'Turtle', 'Caiman' ] => 'Reptile' }
+
+  def initialize(name, options = {})
+    @name = name
+    @biological_class = GuessBiologicalClass.find { |animals,_| animals.include?(name) }.last if options[:guess_biological_class]
+  end
+end
+
+rhinocerus = Animal.new('Rhinocerus', biological_class: 'Mammal')
+rhinocerus.biological_class
+#=> 'Mammal'
+
+turtle = Animal.new('Turtle', guess_biological_class: true)
+turtle.biological_class
+#=> 'Reptile'
+```
+
 
 ## Validations
 
@@ -121,6 +122,7 @@ big_farm = Farm.new(animals: [:pigs, :cows])
 # raises AttributeError, ':animals has not passed validation'
 ```
 
+
 ## Convert your attributes
 
 You can pass a converter as an option for a constructable attribute,
@@ -139,6 +141,7 @@ small_box.height
 #=> 240
 ```
 
+
 ## Default values
 
 You can also specify, which values your constructable attributes are set
@@ -154,6 +157,7 @@ rails.opinionated
 #=> true
 
 ```
+
 
 ## Redefining setters and getters
 
@@ -184,6 +188,7 @@ song.length = 'abc'
 # raises AttributeError, ':length must be of type Integer'
 ```
 
+
 ## constructable\_attributes method
 
 You can all the constructable attributes and their values of your class as a hash,
@@ -212,7 +217,7 @@ impossible, to provide all the magic of this gem, without defining
 the 'included' macro. I thought about getting rid of some of the magic,
 but this would infer with my initial intention, to provide an easy way
 to make constructable classes. If someone has a nice idea, how to solve
-this problem elgantely, please contact me!
+this problem elgantly, please contact me!
 
 ## Copyright
 Copyright (c) 2011 Manuel Korfmann. See LICENSE.txt for
