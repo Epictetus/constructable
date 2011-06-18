@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{constructable}
-  s.version = "0.3.3"
+  s.version = "0.3.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Manuel Korfmann"]
-  s.date = %q{2011-06-18}
+  s.date = %q{2011-06-19}
   s.description = %q{Makes constructing objects through an attributes hash easier}
   s.email = %q{manu@korfmann.info}
   s.extra_rdoc_files = [
