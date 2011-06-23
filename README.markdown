@@ -15,14 +15,14 @@ end
 ```
 
 Then you can construct objects by providing a hash as the last argument
-to ```ruby ProgrammingLanguage.new``` like this:
+to ```ProgrammingLanguage.new``` like this:
 
 ```ruby
 ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro Matsumoto')
 ```
 
-The object _ruby_ will now have the instance variables _@name_ and
-_@creator_ set to _'Ruby'_ and _'Yukihiro Matsumoto'_.
+The object ```ruby``` will now have the instance variables ```@name``` and
+```@creator``` set to ```'Ruby'``` and ```'Yukihiro Matsumoto'```.
 
 
 ## Setters, Getters
@@ -162,7 +162,7 @@ rails.opinionated
 ## Redefining setters and getters
 
 You can redefine the setters and getters provided by the constructable
-macro and still get all the validations and stuff by calling super:
+macro and still get all the validations and stuff by calling ```super```:
 
 ```ruby
 class Song
@@ -195,7 +195,7 @@ song = Song.new(name: 'Aaron', length: 190)
 ## constructable\_attributes method
 
 You can all the constructable attributes and their values of your class as a hash,
-by calling the constructable_attributes method from within an instance
+by calling the ```constructable_attributes``` method from within an instance
 of your class:
 
 ```ruby
