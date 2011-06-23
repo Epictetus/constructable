@@ -15,7 +15,7 @@ end
 ```
 
 Then you can construct objects by providing a hash as the last argument
-to ProgrammingLanguage.new like this:
+to ```ruby ProgrammingLanguage.new``` like this:
 
 ```ruby
 ruby = ProgrammingLanguage.new(name: 'Ruby', creator: 'Yukihiro Matsumoto')
