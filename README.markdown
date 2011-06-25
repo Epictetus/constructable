@@ -134,11 +134,12 @@ macro and still get all the validations and stuff by calling ```super```:
 
 ```ruby
 class Song
-  constructable :length, accessible: true, validate_type: Integer
+  constructable :length, accessible: true, required: true
 
 
   def length=(length)
-    if length.is_a?(String) && length =~ /(\d{,2}):(\d{,2})/
+    case length
+    when /(\d{,2}):(\d{,2})/
       @length = $1.to_i * 60 + $2.to_i
     else
      super
@@ -153,8 +154,8 @@ song.length = '1:30'
 song.length
 #=> 90
 
-song.length = 'abc'
-# raises AttributeError, ':length must be of type Integer'
+song.length = nil
+# raises AttributeError, ':length is a required attribute'
 
 song = Song.new(name: 'Aaron', length: 190)
 #=> #<Song:0x0x00000100941528 @length=190 @name="Aaron" @name_history=["Aaron"]>
