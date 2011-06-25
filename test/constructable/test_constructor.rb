@@ -14,10 +14,10 @@ describe 'Constructor' do
     end
 
     it 'defines public setters validating like in the constructor' do
-      @klass.constructable :integer, validate_type: Integer, writable: true
-      instance = @klass.new
+      @klass.constructable :integer, required: true, writable: true
+      instance = @klass.new(integer: 1)
       assert_raises AttributeError do
-        instance.integer = 6.6
+        instance.integer = nil
       end
     end
 
@@ -25,14 +25,14 @@ describe 'Constructor' do
 
       describe 'class' do
         it 'getters ' do
-          @klass.constructable :integer, validate_type: Integer, accessible: true
+          @klass.constructable :integer,  accessible: true
           @klass.class_eval { define_method(:integer){ 1 } }
           instance = @klass.new(integer: 2)
           assert_equal 1, instance.integer
         end
 
         it 'setters ' do
-          @klass.constructable :integer, validate_type: Integer, accessible: true
+          @klass.constructable :integer, accessible: true
           @klass.class_eval { def integer=(foo);@integer = 1;end }
           instance = @klass.new(integer: 4)
           instance.integer = 5
@@ -42,7 +42,7 @@ describe 'Constructor' do
 
       describe 'module' do
         before do
-          @module.constructable :integer, validate_type: Integer, accessible: true
+          @module.constructable :integer, accessible: true
         end
 
         it 'getters ' do
@@ -74,18 +74,18 @@ describe 'Constructor' do
 
       describe 'allows to super to the generated method' do
         it 'gets' do
-          @klass.constructable :integer, validate_type: Integer, accessible: true
+          @klass.constructable :integer, accessible: true
           @klass.class_eval { def integer; super ;end }
           instance = @klass.new(integer: 2)
           assert_equal 2, instance.integer
         end
 
         it 'sets' do
-          @klass.constructable :integer, validate_type: Integer, accessible: true
+          @klass.constructable :integer, required: true, accessible: true
           @klass.class_eval { def integer=(value); super ;end }
           instance = @klass.new(integer: 2)
           assert_raises Constructable::AttributeError do
-            instance.integer = :not_an_integer
+            instance.integer = nil
           end
         end
       end

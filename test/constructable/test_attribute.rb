@@ -50,41 +50,6 @@ describe 'Attribute' do
       end
     end
 
-    describe 'validator' do
-      it 'checks for validate_type first' do
-        attribute = Attribute.new(:array, validate_type: Array, validate: ->(value) { value.all? { |s| String === s }})
-        assert_raises AttributeError do
-          attribute.process('obviously not an array')
-        end
-      end
-
-      it 'should raise an AttributeError if the validator doesn\'t pass' do
-        attribute = Attribute.new(:foo, validate: ->(number) { number < 5 })
-        begin
-          attribute.process(6)
-        rescue Exception => e
-          assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
-          assert_equal ':foo did not pass validation', e.message
-        else
-          assert false, 'AttributeError was not raised'
-        end
-      end
-    end
-
-    describe 'validate_type check' do
-      it 'should raise an AttributeError if the value has not the wanted validate_type' do
-        attribute = Attribute.new(:foo, validate_type: Integer)
-        begin
-          attribute.process('notanumber')
-        rescue Exception => e
-          assert AttributeError === e, "[#{e.class},#{e.message}] was not expected"
-          assert_equal ':foo must be of type Integer', e.message
-        else
-          assert false, 'AttributeError was not raised'
-        end
-      end
-    end
-
     describe 'default value' do
       it 'should be possible to provide a default value' do
         attribute = Attribute.new(:foo, default: ->{ :bar })

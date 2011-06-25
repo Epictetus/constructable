@@ -7,11 +7,11 @@ describe 'integration' do
       end
 
       it 'has a nice syntax' do
-        @klass.constructable :foo, :bar, accessible: true, validate_type: Integer
+        @klass.constructable :foo, :bar, accessible: true, required: true
         instance = @klass.new(foo: 5, bar: 2)
         assert_equal 5, instance.foo
         assert_raises AttributeError do
-          instance.bar = '5'
+          instance.bar = nil
         end
       end
 

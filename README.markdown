@@ -80,12 +80,7 @@ turtle.biological_class
 ```
 
 
-## Validations
-
-You can setup validation for constructable attributes, so the users of
-your api won't provide weird values or none at all:
-
-### required
+## Required attributes
 
 ```ruby
 class Holidays
@@ -95,33 +90,6 @@ end
 summer_holidays = Holidays.new
 # raises AttributeError, ':when is a required attribute'
 ```
-
-### validate\_type
-
-```ruby
-class Conference
-  constructable :attendees, validate_type: Integer
-end
-
-euruko = Conference.new('~300') # btw, euruko was really great!
-# raises AttributeError, ':attendees must be of type Integer'
-```
-
-### validate
-
-```ruby
-class Farm
-  costructable :animals,
-    validate_type: Array,
-    validate: ->(array_of_animals) do
-      array_of_animals.all? { |animal| animal.is_a?(String) 
-    end
-end
-
-big_farm = Farm.new(animals: [:pigs, :cows])
-# raises AttributeError, ':animals has not passed validation'
-```
-
 
 ## Convert your attributes
 
